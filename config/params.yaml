@@ -1,0 +1,3 @@
+RotatingLidar:
+  
+    planefile: "/home/stereye/code/RotatingLidar/RotatinLidar_ws/src/config/plane/plane.txt"

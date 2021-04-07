@@ -104,6 +104,8 @@ catkin_package(
  DEPENDS system_lib
 )
 find_package(PCL REQUIRED)
+
+find_package(Ceres REQUIRED)
 ###########
 ## Build ##
 ###########
@@ -137,9 +139,15 @@ add_definitions(${PCL_DEFINITIONS})
 add_executable(SweepRegistration src/ASweepRegistration.cpp)
 target_link_libraries(SweepRegistration ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
-
 add_executable(EncoderLidarCalib src/EncoderLidarCalib.cpp)
 target_link_libraries(EncoderLidarCalib ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+
+add_executable(PlaneGenerator src/PlaneGenerator.cpp)
+target_link_libraries(PlaneGenerator ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+
+add_executable(EncoderCalibration src/EncoderCalibration.cpp)
+target_link_libraries(EncoderCalibration ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

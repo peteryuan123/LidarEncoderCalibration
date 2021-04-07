@@ -1,0 +1,10 @@
+<launch>
+
+    <arg name="project" default="planeGenerator"/>
+    <arg name="angle" default="0"/>
+    <param name="planefile" value = "$(find RotatingLidar)/config/plane/plane.txt" />
+    
+    <node pkg="RotatingLidar" type="PlaneGenerator" name="PlaneGenerator" output="screen" args="$(arg angle)">
+    </node>
+
+</launch>

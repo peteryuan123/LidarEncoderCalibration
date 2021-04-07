@@ -36,7 +36,7 @@ struct PointXYZTIR
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (PointXYZTIR,
     (float, x, x) (float, y, y) (float, z, z) (double, timestamp, timestamp)
-    (float, intensity, intensity) (uint8_t, ring, ring)
+    (float, intensity, intensity) (std::uint8_t, ring, ring)
 )
 
 
@@ -71,6 +71,7 @@ public:
         N_SCAN = 16;
         Horizon_SCAN = 1250;
     }
+    
     double getBeginTime(pcl::PointCloud<PointXYZTIR>::Ptr laserCloud)
     {
         double mintime = std::numeric_limits<float>::max();
