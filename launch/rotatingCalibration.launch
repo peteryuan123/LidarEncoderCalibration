@@ -1,0 +1,13 @@
+<launch>
+
+    <arg name="project" default="rotatingCalibration"/>
+    <param name="x_min" value = "-0.5" />
+    <param name="y_min" value = "-0.5" />
+    <param name="x_max" value = "1.7" />
+    <param name="y_max" value = "2.3" />
+    <param name="ransac_threshold" value = "0.01" />
+    
+    <node pkg="RotatingLidar" type="RotatingEncoderCalibration" name="RotatingEncoderCalibration" output="screen">
+    </node>
+
+</launch>

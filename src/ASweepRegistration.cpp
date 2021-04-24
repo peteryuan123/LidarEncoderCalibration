@@ -7,12 +7,15 @@ class SweepRegistration: public utility
 {
 private:
 
+    //Subscriber
     ros::Subscriber subLaserCloud;
     ros::Subscriber subImu;
     ros::Subscriber subTf;
 
+    //Publisher
     ros::Publisher pubDeskewCloud;
 
+    // Cloud
     pcl::PointCloud<PointXYZTIR>::Ptr laserCloud;
     pcl::PointCloud<PointXYZTIR>::Ptr sweepCloud;
 
@@ -52,7 +55,7 @@ public:
         laserCloud.reset(new pcl::PointCloud<PointXYZTIR>());
         sweepCloud.reset(new pcl::PointCloud<PointXYZTIR>());
     }
-    
+
     bool preserveCloud(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg)
     {
         cloudQueue.push_back(*laserCloudMsg);

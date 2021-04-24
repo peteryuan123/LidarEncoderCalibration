@@ -139,14 +139,21 @@ add_definitions(${PCL_DEFINITIONS})
 add_executable(SweepRegistration src/ASweepRegistration.cpp)
 target_link_libraries(SweepRegistration ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
-add_executable(EncoderLidarCalib src/EncoderLidarCalib.cpp)
-target_link_libraries(EncoderLidarCalib ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_executable(HandEyeCalib src/HandEyeCalib.cpp)
+target_link_libraries(HandEyeCalib ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
 add_executable(PlaneGenerator src/PlaneGenerator.cpp)
 target_link_libraries(PlaneGenerator ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
 add_executable(EncoderCalibration src/EncoderCalibration.cpp)
 target_link_libraries(EncoderCalibration ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+
+add_executable(EncoderCalibrationLivox src/EncoderCalibrationLivox.cpp)
+target_link_libraries(EncoderCalibrationLivox ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+
+add_executable(RotatingEncoderCalibration src/RotatingEncoderCalibration.cpp)
+target_link_libraries(RotatingEncoderCalibration ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

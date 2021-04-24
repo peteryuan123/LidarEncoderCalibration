@@ -9,7 +9,6 @@
 #include <ceres/autodiff_cost_function.h>
 typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
 
-Eigen::IOFormat CleanFmt(4, 0, ", ", "\n", "[", "]");
 
 struct PlaneErrorFactor
 {
@@ -30,6 +29,7 @@ struct PlaneErrorFactor
         Eigen::Matrix<T, 4, 1> curFramePlane_T;
         fixFramePlane_T << T(_fixFramePlane[0]), T(_fixFramePlane[1]), T(_fixFramePlane[2]), T(_fixFramePlane[3]);
         curFramePlane_T << T(_curFramePlane[0]), T(_curFramePlane[1]), T(_curFramePlane[2]), T(_curFramePlane[3]);
+
         // Eigen::Matrix<T, 4, 1> fixFramePlane_T = Eigen::Map<Eigen::Matrix<T, 4, 1>>((T*)(_fixFramePlane.data()));
         // Eigen::Matrix<T, 4, 1> curFramePlane_T = Eigen::Map<Eigen::Matrix<T, 4, 1>>((T*)(_curFramePlane.data()));
 
@@ -50,16 +50,16 @@ struct PlaneErrorFactor
         
 
         
-        // Eigen::Matrix<T, 4, 1> curPlaneInAxis = (T_lidar_to_axis.inverse() *  T_axis_rotate.inverse()).transpose() * curFramePlane_T;
-        // Eigen::Matrix<T, 4, 1> fixPlaneInAxis = (T_lidar_to_axis.inverse() *  T_axis_rotate.inverse()).transpose() * fixFramePlane_T;
+        Eigen::Matrix<T, 4, 1> curPlaneInAxis = (T_lidar_to_axis.inverse() *  T_axis_rotate.inverse()).transpose() * curFramePlane_T;
+        Eigen::Matrix<T, 4, 1> fixPlaneInAxis = T_lidar_to_axis.inverse().transpose() * fixFramePlane_T;
         // residual[0] = (curPlaneInAxis - fixPlaneInAxis).squaredNorm();
 
-        Eigen::Matrix<T, 4, 1> curPlaneInFixFrame = (T_lidar_to_axis.inverse() * T_axis_rotate.inverse() * T_lidar_to_axis).transpose() * curFramePlane_T;
-        Eigen::Matrix<T, 3, 1> curNorm(curPlaneInFixFrame(0), curPlaneInFixFrame(1), curPlaneInFixFrame(2));
-        Eigen::Matrix<T, 3, 1> fixNorm(fixFramePlane_T(0), fixFramePlane_T(1), fixFramePlane_T(2));
+        // Eigen::Matrix<T, 4, 1> curPlaneInFixFrame = (T_lidar_to_axis.inverse() * T_axis_rotate.inverse() * T_lidar_to_axis).transpose() * curFramePlane_T;
+        Eigen::Matrix<T, 3, 1> curNorm(curPlaneInAxis(0), curPlaneInAxis(1), curPlaneInAxis(2));
+        Eigen::Matrix<T, 3, 1> fixNorm(fixPlaneInAxis(0), fixPlaneInAxis(1), fixPlaneInAxis(2));
 
         residual[0] = T(1) - ceres::abs(curNorm.normalized().dot(fixNorm.normalized()));
-        residual[1] = curPlaneInFixFrame[3] - fixFramePlane_T[3];
+        residual[1] = curPlaneInAxis[3] - fixPlaneInAxis[3];
         
         // residual[0] = T(1) - ceres::abs(curNorm.normalized().dot(fixNorm.normalized())) ;
         // residual[1] =  + curPlaneInFixFrame(3) - fixFramePlane_T(3);

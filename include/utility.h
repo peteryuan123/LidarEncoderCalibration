@@ -6,6 +6,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/io/ply_io.h>
+#include <pcl/io/pcd_io.h>
 #include <pcl_conversions/pcl_conversions.h>
 
 #include <sensor_msgs/PointCloud2.h>
@@ -121,6 +122,18 @@ public:
         if (test.header.frame_id == "fail")
             return true;
         return false;
+    }
+
+    Eigen::Matrix4d fromMsgToMatrix(geometry_msgs::TransformStamped msg)
+    {
+        Eigen::Matrix4d transform = Eigen::Matrix4d::Identity();
+        Eigen::Quaterniond msg_r(msg.transform.rotation.w, msg.transform.rotation.x, msg.transform.rotation.y, msg.transform.rotation.z);
+        transform.block<3, 3>(0, 0) = msg_r.matrix();
+        transform(0,3) = msg.transform.translation.x;
+        transform(1,3) = msg.transform.translation.y;
+        transform(2,3) = msg.transform.translation.z;
+        
+        return transform;
     }
     // geometry_msgs::TransformStamped get
 };
